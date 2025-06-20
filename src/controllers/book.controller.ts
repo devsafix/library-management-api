@@ -11,7 +11,7 @@ const createBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err: any) {
-    res.status(400).json({
+    res.status(404).json({
       message: "Error creating book",
       error: err,
     });
@@ -37,8 +37,25 @@ const getAllBooks = async (req: Request, res: Response) => {
       message: "Books retrieved successfully",
     });
   } catch (err: any) {
-    res.status(400).json({
+    res.status(404).json({
       message: "Error retrieving books",
+      error: err,
+    });
+  }
+};
+
+const getBookById = async (req: Request, res: Response) => {
+  try {
+    const book = await Book.findById(req.params.bookId);
+    if (!book) throw new Error("Book not found");
+    res.status(200).json({
+      success: true,
+      data: book,
+      message: "Book retrieved successfully",
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      message: "Error retrieving book",
       error: err,
     });
   }
@@ -47,4 +64,5 @@ const getAllBooks = async (req: Request, res: Response) => {
 export const bookController = {
   createBook,
   getAllBooks,
+  getBookById,
 };
