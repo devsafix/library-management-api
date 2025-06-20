@@ -61,8 +61,29 @@ const getBookById = async (req: Request, res: Response) => {
   }
 };
 
+const updateBook = async (req: Request, res: Response) => {
+  try {
+    const updatedData = req.body;
+    const book = await Book.findByIdAndUpdate(req.params.bookId, updatedData, {
+      new: true,
+    });
+    if (!book) throw new Error("Book not found");
+    res.status(200).json({
+      success: true,
+      data: book,
+      message: "Book updated successfully",
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      message: "Error updating book",
+      error: err,
+    });
+  }
+};
+
 export const bookController = {
   createBook,
   getAllBooks,
   getBookById,
+  updateBook,
 };
