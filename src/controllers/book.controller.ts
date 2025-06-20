@@ -12,6 +12,7 @@ const createBook = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     res.status(404).json({
+      success: false,
       message: "Error creating book",
       error: err,
     });
@@ -38,6 +39,7 @@ const getAllBooks = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     res.status(404).json({
+      success: false,
       message: "Error retrieving books",
       error: err,
     });
@@ -55,6 +57,7 @@ const getBookById = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     res.status(404).json({
+      success: false,
       message: "Error retrieving book",
       error: err,
     });
@@ -75,7 +78,25 @@ const updateBook = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     res.status(404).json({
+      success: false,
       message: "Error updating book",
+      error: err,
+    });
+  }
+};
+
+const deleteBook = async (req: Request, res: Response) => {
+  try {
+    await Book.findByIdAndDelete(req.params.bookId);
+    res.status(200).json({
+      success: true,
+      message: "Book deleted successfully",
+      data: null,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: "Error deleting book",
       error: err,
     });
   }
@@ -86,4 +107,5 @@ export const bookController = {
   getAllBooks,
   getBookById,
   updateBook,
+  deleteBook,
 };
