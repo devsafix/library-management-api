@@ -30,18 +30,17 @@ const bookSchema = new Schema<IBookMethods>(
 );
 
 // Instance method
-bookSchema.method(
-  "updateAvailability",
-  async function (availableValue: boolean) {
-    this.available = availableValue;
-    await this.save();
-  }
-);
+bookSchema.methods.decreaseCopies = async function (quantity: number) {
+  this.copies = this.copies - quantity;
+  if (this.copies < 0) this.copies = 0;
 
-// middlewares
-bookSchema.pre("save", function (next) {
-  console.log(`Book "${this.title}" is being saved`);
-  next();
-});
+  if (this.copies === 0) {
+    this.available = false;
+  } else {
+    this.available = true;
+  }
+
+  await this.save();
+};
 
 export const Book = model<IBookMethods>("Book", bookSchema);

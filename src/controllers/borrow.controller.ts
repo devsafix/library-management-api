@@ -6,21 +6,15 @@ const borrowBook = async (req: Request, res: Response) => {
   try {
     const { book: bookId, quantity, dueDate } = req.body;
 
-    const book = await Book.findById(bookId);
-    if (!book) throw new Error("Book not found");
-
-    if (book.copies < quantity) {
-      throw new Error("Not enough copies available");
-    }
-
-    // Update copies
-    book.copies = book.copies - quantity;
-
-    const availableValue = book.copies === 0 ? false : true;
-    await book.updateAvailability(availableValue);
-
     const borrow = new Borrow({ book: bookId, quantity, dueDate });
     await borrow.save();
+
+    // After borrow is saved, now decrease copies
+    const book = await Book.findById(bookId);
+    if (book) {
+      await book.decreaseCopies(quantity);
+    }
+
     res.status(201).json({
       success: true,
       message: "Book borrowed successfully",
@@ -28,7 +22,7 @@ const borrowBook = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     console.error(err);
-    res.status(404).json({
+    res.status(500).json({
       success: false,
       message: "Error borrowing book",
       error: err.message,
