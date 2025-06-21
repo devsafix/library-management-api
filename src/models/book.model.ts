@@ -38,4 +38,10 @@ bookSchema.method(
   }
 );
 
+// middlewares
+bookSchema.pre("save", function (next) {
+  console.log(`Book "${this.title}" is being saved`);
+  next();
+});
+
 export const Book = model<IBookMethods>("Book", bookSchema);
