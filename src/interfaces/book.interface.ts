@@ -13,3 +13,7 @@ export interface IBook {
   copies: number;
   available: boolean;
 }
+
+export interface IBookMethods extends IBook {
+  updateAvailability(availableValue: boolean): Promise<void>;
+}
