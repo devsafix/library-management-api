@@ -26,12 +26,12 @@ const borrowBook = async (req: Request, res: Response) => {
       message: "Book borrowed successfully",
       data: borrow,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     res.status(404).json({
       success: false,
       message: "Error borrowing book",
-      error: err,
+      error: err.message,
     });
   }
 };
@@ -70,11 +70,11 @@ const getBorrowSummary = async (req: Request, res: Response) => {
       message: "Borrowed books summary retrieved successfully",
       data: summary,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: "Error retrieving borrow summary",
-      error: err,
+      error: err.message,
     });
   }
 };
