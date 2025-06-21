@@ -15,5 +15,5 @@ export interface IBook {
 }
 
 export interface IBookMethods extends IBook {
-  decreaseCopies(quantity: boolean): Promise<void>;
+  decreaseCopies(quantity: number): Promise<void>;
 }
