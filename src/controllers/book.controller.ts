@@ -11,7 +11,7 @@ const createBook = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err: any) {
-    res.status(404).json({
+    res.status(500).json({
       success: false,
       message: "Error creating book",
       error: err.message,
@@ -38,7 +38,7 @@ const getAllBooks = async (req: Request, res: Response) => {
       message: "Books retrieved successfully",
     });
   } catch (err: any) {
-    res.status(404).json({
+    res.status(500).json({
       success: false,
       message: "Error retrieving books",
       error: err.message,
@@ -56,7 +56,7 @@ const getBookById = async (req: Request, res: Response) => {
       message: "Book retrieved successfully",
     });
   } catch (err: any) {
-    res.status(404).json({
+    res.status(500).json({
       success: false,
       message: "Error retrieving book",
       error: err.message,
@@ -77,7 +77,7 @@ const updateBook = async (req: Request, res: Response) => {
       message: "Book updated successfully",
     });
   } catch (err: any) {
-    res.status(404).json({
+    res.status(500).json({
       success: false,
       message: "Error updating book",
       error: err.message,
@@ -94,7 +94,7 @@ const deleteBook = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (err: any) {
-    res.status(404).json({
+    res.status(500).json({
       success: false,
       message: "Error deleting book",
       error: err.message,
