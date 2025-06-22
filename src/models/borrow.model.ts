@@ -15,6 +15,7 @@ const borrowSchema = new Schema<IBorrow>(
   { timestamps: true, versionKey: false }
 );
 
+// middleware to check if book exists and has enough copies
 borrowSchema.pre("save", async function (next) {
   const book = await Book.findById(this.book);
   if (!book) {
