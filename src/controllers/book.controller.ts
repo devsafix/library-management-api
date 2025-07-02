@@ -21,21 +21,35 @@ const createBook = async (req: Request, res: Response) => {
 
 const getAllBooks = async (req: Request, res: Response) => {
   try {
-    const filter = req.query.filter as string;
+    const filter = req.query.filter as string | undefined;
     const sortBy = (req.query.sortBy as string) || "createdAt";
     const sortOrder = (req.query.sort as string) || "desc";
     const limit = parseInt(req.query.limit as string) || 10;
+    const page = parseInt(req.query.page as string) || 1;
 
-    const condition = filter ? { genre: filter } : {};
+    const condition: any = {};
+    if (filter) {
+      condition.genre = filter;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const total = await Book.countDocuments(condition);
 
     const books = await Book.find(condition)
       .sort({ [sortBy]: sortOrder === "asc" ? 1 : -1 })
+      .skip(skip)
       .limit(limit);
 
     res.status(200).json({
       success: true,
-      data: books,
       message: "Books retrieved successfully",
+      data: books,
+      meta: {
+        total,
+        page,
+        limit,
+      },
     });
   } catch (err: any) {
     res.status(500).json({
