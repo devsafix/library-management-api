@@ -47,4 +47,9 @@ bookSchema.methods.updateAvailable = async function (copies: number) {
   this.available = copies > 0;
 };
 
+bookSchema.pre("save", function (next) {
+  this.available = this.copies > 0;
+  next();
+});
+
 export const Book = model<IBookMethods>("Book", bookSchema);
