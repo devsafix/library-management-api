@@ -43,4 +43,8 @@ bookSchema.methods.decreaseCopies = async function (quantity: number) {
   await this.save();
 };
 
+bookSchema.methods.updateAvailable = async function (copies: number) {
+  this.available = copies > 0;
+};
+
 export const Book = model<IBookMethods>("Book", bookSchema);

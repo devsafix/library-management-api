@@ -81,10 +81,17 @@ const getBookById = async (req: Request, res: Response) => {
 const updateBook = async (req: Request, res: Response) => {
   try {
     const updatedData = req.body;
-    const book = await Book.findByIdAndUpdate(req.params.bookId, updatedData, {
-      new: true,
-    });
+    const book = await Book.findById(req.params.bookId);
     if (!book) throw new Error("Book not found");
+
+    Object.assign(book, updatedData);
+
+    if (updatedData.copies !== 0) {
+      await book.updateAvailable(updatedData.copies);
+    }
+
+    await book.save();
+
     res.status(200).json({
       success: true,
       data: book,
