@@ -1,6 +1,7 @@
 export interface IBook {
   title: string;
   author: string;
+  cover?: string;
   genre:
     | "FICTION"
     | "NON_FICTION"

@@ -5,6 +5,7 @@ const bookSchema = new Schema<IBookMethods>(
   {
     title: { type: String, required: true },
     author: { type: String, required: true },
+    cover: { type: String },
     genre: {
       type: String,
       enum: [
