@@ -5,8 +5,12 @@ import borrowRoutes from "./routes/borrow.route";
 
 const app: Application = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://booknest-by-safi.vercel.app"],
+  })
+);
 
 // Routes
 app.use("/api/books", bookRoutes);
